@@ -9,5 +9,11 @@
             "name": "rick",
             "email": "rickwestdev@gmail.com"
         }
-    ]
+    ],
+    "autoload": {
+        "psr-4": {
+            "Console\\": "src"
+        },
+        "classmap": ["src"]
+    }
 }
