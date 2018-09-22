@@ -10,7 +10,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class GenerateMarkdownCommand extends Command
 {
-    protected function configure() {
+    protected function configure()
+    {
         // the name of the command
         $this->setName('import')
 
