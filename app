@@ -5,10 +5,10 @@
 require __DIR__.'/vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
-use RickWest\WordpressToMarkdown\GenerateMarkdownCommand;
+use RickWest\ExportToMarkdown\Command\GenerateCommand;
 
 $app = new Application();
 
-$app->add(new GenerateMarkdownCommand());
+$app->add(new GenerateCommand());
 
 $app->run();

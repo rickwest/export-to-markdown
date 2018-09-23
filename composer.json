@@ -1,5 +1,5 @@
 {
-    "name": "rickwest/wordpresess-to-markdown",
+    "name": "rickwest/export-to-markdown",
     "description": "Exported Wordpress XML to Markdown",
     "authors": [
         {
@@ -9,11 +9,14 @@
     ],
     "require": {
         "symfony/console": "^4.1",
-        "league/html-to-markdown": "^4.8"
+        "league/html-to-markdown": "^4.8",
+        "symfony/serializer": "^4.1",
+        "symfony/property-access": "^4.1",
+        "symfony/property-info": "^4.1"
     },
     "autoload": {
         "psr-4": {
-            "Console\\": "src"
+            "RickWest\\ExportToMarkdown\\": "src"
         },
         "classmap": ["src"]
     }
