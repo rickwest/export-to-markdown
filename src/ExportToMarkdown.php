@@ -5,6 +5,7 @@ namespace RickWest\ExportToMarkdown;
 
 use League\HTMLToMarkdown\HtmlConverter;
 use RickWest\ExportToMarkdown\Model\Item;
+use RickWest\ExportToMarkdown\Model\ItemsInterface;
 use RickWest\ExportToMarkdown\Model\WordpressExport;
 use RickWest\ExportToMarkdown\NameConverter\EncodedSuffixNameConverter;
 use RickWest\ExportToMarkdown\Normalizer\WordpressExportDenormalizer;
@@ -14,7 +15,7 @@ use Symfony\Component\Serializer\Serializer;
 
 class ExportToMarkdown
 {
-    public function handle($input)
+    private function getSerializer()
     {
         $nameConverter = new EncodedSuffixNameConverter();
 
@@ -23,15 +24,18 @@ class ExportToMarkdown
             new ObjectNormalizer(null, $nameConverter),
         ];
 
-        $serializer = new Serializer($normalizers, [ new XmlEncoder() ]);
+        $encoders = [
+            new XmlEncoder(),
+        ];
 
-        $export = $serializer->deserialize($input, WordpressExport::class, 'xml');
+        return new Serializer($normalizers, $encoders);
+    }
 
+    private function output(ItemsInterface $export, $path) {
         $items = $export->getItems();
 
         $count = 0;
         foreach($items as $item) {
-
             /** @var Item $item */
             if (! $item->getContent()) {
                 continue;
@@ -57,18 +61,33 @@ EOT;
             // but personally I'm not keen so will parse link and generate filename;
             $url = parse_url($item->getLink());
 
-            $name = preg_replace('/[^a-zA-Z-]/', '', $url['path']);
+            $filename = preg_replace('/[^a-zA-Z-]/', '', $url['path']);
+
+            if ($path && (substr($path, -1) !== '/')) {
+
+                //need to also check and remove / from front of path
+                $output = $path . '/' . $filename;
+            } else {
+                $output = $path . $filename;
+            }
 
             // returns number of bytes of false on failure;
-            $success = file_put_contents($name . '.md', $data);
+            $success = file_put_contents($output . '.md', $data);
 
             if ($success === false) {
-                // Show error or a useful message??
+                // Return error or a useful message??
             } else {
                 $count++;
             };
         }
 
-        return $count;
+        return $count > 0 ? $count : false;
+    }
+
+    public function handleWordpressExport($input, $path = null)
+    {
+        $export = $this->getSerializer()->deserialize($input, WordpressExport::class, 'xml');
+
+        return $this->output($export, $path);
     }
 }

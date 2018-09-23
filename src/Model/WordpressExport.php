@@ -3,7 +3,11 @@
 namespace RickWest\ExportToMarkdown\Model;
 
 
-class WordpressExport
+/**
+ * Class WordpressExport
+ * @package RickWest\ExportToMarkdown
+ */
+class WordpressExport implements ItemsInterface
 {
     /** @var Item[] */
     private $items;
@@ -26,7 +30,10 @@ class WordpressExport
         return $this;
     }
 
-
+    /**
+     * @param Item $item
+     * @return WordpressExport
+     */
     public function addItem(Item $item): WordpressExport
     {
         $this->items[] = $item;
