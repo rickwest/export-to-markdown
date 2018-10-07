@@ -48,9 +48,10 @@ class ExportToMarkdown
 
             $data = <<<EOT
 ---
+extends: _layouts.post
 title: {$item->getTitle()}
-data: {$item->getPubDate()}
-description: {$item->getDescription()}
+data: {$item->getPubDate()->format('Y-m-d')}
+section: content
 ---
 
 $content

@@ -11,7 +11,7 @@ class Item
     /** @var string */
     private $link;
 
-    /** @var string */
+    /** @var \DateTime */
     private $pubDate;
 
     /** @var string */
@@ -66,9 +66,9 @@ class Item
     }
 
     /**
-     * @return string
+     * @return \DateTime
      */
-    public function getPubDate(): string
+    public function getPubDate(): \DateTime
     {
         return $this->pubDate;
     }
@@ -79,7 +79,7 @@ class Item
      */
     public function setPubDate(string $pubDate): Item
     {
-        $this->pubDate = $pubDate;
+        $this->pubDate = new \DateTime($pubDate);
         return $this;
     }
 
